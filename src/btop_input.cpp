@@ -328,7 +328,7 @@ namespace Input {
 					no_update = false;
 				}
 				else if (is_in(key, "F")) {
-					Config::set("pause_proc_list", Config::getB("pause_proc_list") ? false : true);
+					Config::flip("pause_proc_list");
 					redraw = true;
 				}
 				else if (key == "r")

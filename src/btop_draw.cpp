@@ -1600,7 +1600,7 @@ namespace Proc {
 		auto mem_bytes = Config::getB("proc_mem_bytes");
 		auto vim_keys = Config::getB("vim_keys");
 		auto show_graphs = Config::getB("proc_cpu_graphs");
-		auto pause_proc_list = Config::getB("pause_proc_list");
+		const auto pause_proc_list = Config::getB("pause_proc_list");
 		start = Config::getI("proc_start");
 		selected = Config::getI("proc_selected");
 		const int y = show_detailed ? Proc::y + 8 : Proc::y;
@@ -1974,9 +1974,10 @@ namespace Proc {
 		out += Fx::reset;
 		while (lc++ < height - 3) out += Mv::to(y+lc+1, x+1) + string(width - 2, ' ');
 		if (pause_proc_list) {
-			out += Mv::to(y + height - 2, x + 1) + Theme::c("proc_pause_bg") + string(width - 2, ' ')
-				+ Mv::to(y + height - 2, x + ((width - 22) / 2)) + Theme::c("title") + Fx::b + "Process list paused"
-				+ Fx::reset; 
+			fmt::format_to(std::back_inserter(out), "{}{}{:<{}}{}{}{}Process list paused{}",
+				Mv::to(y + height - 2, x + 1), Theme::c("proc_pause_bg"), " ", width - 2,
+				Mv::to(y + height - 2, x + (width - 21) / 2), Theme::c("title"),
+				Fx::b, Fx::reset);
 		}
 
 		//? Draw scrollbar if needed

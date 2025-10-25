@@ -1165,7 +1165,7 @@ namespace Proc {
 		auto per_core = Config::getB("proc_per_core");
 		auto tree = Config::getB("proc_tree");
 		auto show_detailed = Config::getB("show_detailed");
-		auto pause_proc_list = Config::getB("pause_proc_list");
+		const auto pause_proc_list = Config::getB("pause_proc_list");
 		const size_t detailed_pid = Config::getI("detailed_pid");
 		bool should_filter = current_filter != filter;
 		if (should_filter) current_filter = filter;
@@ -1268,7 +1268,7 @@ namespace Proc {
 
 			//? Clear dead processes from current_procs if not paused
 			if (not pause_proc_list) {
-				auto eraser = rng::remove_if(current_procs, [&](const auto &element) { return not v_contains(found, element.pid); });
+				auto eraser = rng::remove_if(current_procs, [&](const auto& element) { return not v_contains(found, element.pid); });
 				current_procs.erase(eraser.begin(), eraser.end());
 			}
 			//? Reset cpu usage for dead processes if paused

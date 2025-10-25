@@ -2852,7 +2852,7 @@ namespace Proc {
 		auto should_filter_kernel = Config::getB("proc_filter_kernel");
 		auto tree = Config::getB("proc_tree");
 		auto show_detailed = Config::getB("show_detailed");
-		auto pause_proc_list = Config::getB("pause_proc_list");
+		const auto pause_proc_list = Config::getB("pause_proc_list");
 		const size_t detailed_pid = Config::getI("detailed_pid");
 		bool should_filter = current_filter != filter;
 		if (should_filter) current_filter = filter;
