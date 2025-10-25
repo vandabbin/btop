@@ -438,8 +438,8 @@ namespace Proc {
 	void proc_sorter(vector<proc_info>& proc_vec, const string& sorting, bool reverse, bool tree = false);
 
 	//* Recursive sort of process tree
-	void tree_sort(vector<tree_proc>& proc_vec, const string& sorting,
-				   bool reverse, int& c_index, const int index_max, bool collapsed = false);
+	void tree_sort(vector<tree_proc>& proc_vec, const string& sorting, bool reverse, bool paused,
+					int& c_index, const int index_max, bool collapsed = false);
 
 	auto matches_filter(const proc_info& proc, const std::string& filter) -> bool;
 

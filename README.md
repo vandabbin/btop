@@ -193,6 +193,7 @@ C++ version and continuation of [bashtop](https://github.com/aristocratos/bashto
 * Easy switching between sorting options.
 * Tree view of processes.
 * Send any signal to selected process.
+* Pause the process list.
 * UI menu for changing all config file options.
 * Auto scaling graph for network usage.
 * Shows IO activity and speeds for disks.

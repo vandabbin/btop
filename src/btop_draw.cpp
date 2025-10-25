@@ -1531,7 +1531,8 @@ namespace Proc {
 		auto start = Config::getI("proc_start");
 		auto selected = Config::getI("proc_selected");
 		auto last_selected = Config::getI("proc_last_selected");
-		const int select_max = (Config::getB("show_detailed") ? Proc::select_max - 8 : Proc::select_max);
+		const int select_max = (Config::getB("show_detailed") ? (Config::getB("pause_proc_list") ? Proc::select_max - 9 : Proc::select_max - 8) :
+																(Config::getB("pause_proc_list") ? Proc::select_max - 1 : Proc::select_max));
 		auto vim_keys = Config::getB("vim_keys");
 
 		int numpids = Proc::numpids;
@@ -1599,11 +1600,13 @@ namespace Proc {
 		auto mem_bytes = Config::getB("proc_mem_bytes");
 		auto vim_keys = Config::getB("vim_keys");
 		auto show_graphs = Config::getB("proc_cpu_graphs");
+		auto pause_proc_list = Config::getB("pause_proc_list");
 		start = Config::getI("proc_start");
 		selected = Config::getI("proc_selected");
 		const int y = show_detailed ? Proc::y + 8 : Proc::y;
 		const int height = show_detailed ? Proc::height - 8 : Proc::height;
-		const int select_max = show_detailed ? Proc::select_max - 8 : Proc::select_max;
+		const int select_max = show_detailed ? (pause_proc_list ? Proc::select_max - 9 : Proc::select_max - 8) : 
+												(pause_proc_list ? Proc::select_max - 1 : Proc::select_max);
 		auto totalMem = Mem::get_totalMem();
 		int numpids = Proc::numpids;
 		if (force_redraw) redraw = true;
@@ -1965,10 +1968,16 @@ namespace Proc {
 				+ (p_graphs.contains(p.pid) ? Mv::l(5) + c_color + p_graphs.at(p.pid)({(p.cpu_p >= 0.1 and p.cpu_p < 5 ? 5ll : (long long)round(p.cpu_p))}, data_same) : "") + end + ' '
 				+ c_color + rjust(cpu_str, 4) + "  " + end;
 			if (lc++ > height - 5) break;
+			else if (lc > height - 5 and pause_proc_list) break;
 		}
 
 		out += Fx::reset;
 		while (lc++ < height - 3) out += Mv::to(y+lc+1, x+1) + string(width - 2, ' ');
+		if (pause_proc_list) {
+			out += Mv::to(y + height - 2, x + 1) + Theme::c("proc_pause_bg") + string(width - 2, ' ')
+				+ Mv::to(y + height - 2, x + ((width - 22) / 2)) + Theme::c("title") + Fx::b + "Process list paused"
+				+ Fx::reset; 
+		}
 
 		//? Draw scrollbar if needed
 		if (numpids > select_max) {

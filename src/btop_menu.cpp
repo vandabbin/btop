@@ -195,6 +195,7 @@ namespace Menu {
 		{"a", "Toggle auto scaling for the network graphs."},
 		{"y", "Toggle synced scaling mode for network graphs."},
 		{"f, /", "To enter a process filter. Start with ! for regex."},
+		{"F", "Pause process list."},
 		{"delete", "Clear any entered filter."},
 		{"c", "Toggle per-core cpu usage of processes."},
 		{"r", "Reverse sorting order in processes box."},

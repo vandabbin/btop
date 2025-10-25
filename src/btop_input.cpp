@@ -327,7 +327,10 @@ namespace Input {
 					Config::flip("proc_tree");
 					no_update = false;
 				}
-
+				else if (is_in(key, "F")) {
+					Config::set("pause_proc_list", Config::getB("pause_proc_list") ? false : true);
+					redraw = true;
+				}
 				else if (key == "r")
 					Config::flip("proc_reversed");
 

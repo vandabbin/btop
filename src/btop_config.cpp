@@ -320,6 +320,7 @@ namespace Config {
 		{"show_detailed", false},
 		{"proc_filtering", false},
 		{"proc_aggregate", false},
+		{"pause_proc_list", false},
 	#ifdef GPU_SUPPORT
 		{"nvml_measure_pcie_speeds", true},
 		{"rsmi_measure_pcie_speeds", true},
