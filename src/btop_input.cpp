@@ -356,6 +356,7 @@ namespace Input {
 					else if (Config::getB("follow_process")) {
 						Config::flip("follow_process");
 						Config::set("followed_pid", 0);
+						Config::set("proc_selected", Config::getI("proc_followed"));
 						Config::set("proc_followed", 0);
 					}
 				}
@@ -449,12 +450,12 @@ namespace Input {
 						if (Config::getB("proc_follow_detailed")) {
 							Config::set("follow_process", true);
 							Config::set("followed_pid", Config::getI("selected_pid"));
-							Config::set("update_following", true);
 						}
 						Config::set("show_detailed", true);
 					}
 					else if (Config::getB("show_detailed")) {
-						const int proc_start_offset = Config::getB("proc_follow_detailed") ? Config::getI("proc_followed") - Config::getI("proc_last_selected") : 0;
+						const int proc_start_offset = Config::getB("proc_follow_detailed") ? (Config::getB("follow_process") ? 
+							Config::getI("proc_followed") : Config::getI("proc_selected")) - Config::getI("proc_last_selected") : 0;
 						if (Config::getI("proc_last_selected") > 0) Config::set("proc_selected", Config::getI("proc_last_selected"));
 						Config::set("proc_start", std::max(0, Config::getI("proc_start") + proc_start_offset));
 						Config::set("proc_last_selected", 0);
@@ -466,6 +467,7 @@ namespace Input {
 							Config::set("proc_followed", 0);
 						}
 					}
+					Config::set("update_following", true);
 				}
 				else if (is_in(key, "+", "-", "space", "C") and Config::getB("proc_tree") and Config::getI("proc_selected") > 0) {
 					atomic_wait(Runner::active);
