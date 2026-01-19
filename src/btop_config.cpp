@@ -65,6 +65,8 @@ namespace Config {
 		{"force_tty", 			"#* Set to true to force tty mode regardless if a real tty has been detected or not.\n"
 								"#* Will force 16-color mode and TTY theme, set all graph symbols to \"tty\" and swap out other non tty friendly symbols."},
 
+		{"disable_default_preset",	"#* Disables the default preset. Cycling through presets will not return to the default preset."},
+
 		{"presets",				"#* Define presets for the layout of the boxes. Preset 0 is always all boxes shown with default settings. Max 9 presets.\n"
 								"#* Format: \"box_name:P:G,box_name:P:G\" P=(0 or 1) for alternate positions, G=graph symbol to use for box.\n"
 								"#* Use whitespace \" \" as separator between different presets.\n"
@@ -342,6 +344,7 @@ namespace Config {
 		{"follow_process", false},
 		{"update_following", false},
 		{"should_selection_return_to_followed", false},
+		{"disable_default_preset", false},
 	#ifdef GPU_SUPPORT
 		{"nvml_measure_pcie_speeds", true},
 		{"rsmi_measure_pcie_speeds", true},

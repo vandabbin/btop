@@ -259,13 +259,15 @@ namespace Input {
 					Runner::run("all", false, true);
 					return;
 				}
-				else if (is_in(key, "p", "P") and Config::preset_list.size() > 1) {
+				else if (is_in(key, "p", "P")) {
 					const auto old_preset = Config::current_preset;
+					const int first_preset = (Config::getB("disable_default_preset") and Config::preset_list.size() > 1) ? 1 : 0;
 					if (key == "p") {
-						if (++Config::current_preset >= (int)Config::preset_list.size()) Config::current_preset = 0;
+						if (++Config::current_preset >= static_cast<int>(Config::preset_list.size()) or Config::current_preset < first_preset)
+							Config::current_preset = first_preset;
 					}
 					else {
-						if (--Config::current_preset < 0) Config::current_preset = Config::preset_list.size() - 1;
+						if (--Config::current_preset < first_preset) Config::current_preset = Config::preset_list.size() - 1;
 					}
 					atomic_wait(Runner::active);
 					if (not Config::apply_preset(Config::preset_list.at(Config::current_preset))) {
