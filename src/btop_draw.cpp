@@ -522,6 +522,7 @@ namespace Cpu {
 	int b_columns, b_column_size;
 	int b_x, b_y, b_width, b_height;
 	float max_observed_pwr = 1.0f;
+	float last_valid_cpu_watts = 0.0f;
 
 	int graph_up_height, graph_low_height;
 	int graph_up_width, graph_low_width;
@@ -846,11 +847,14 @@ namespace Cpu {
 		}
 
 		if (show_watts) {
-			string cwatts = fmt::format(" {:>4.{}f}", cpu.usage_watts, cpu.usage_watts < 10.0f ? 2 : cpu.usage_watts < 100.0f ? 1 : 0);
-			string cwatts_post = "W";
-
-			max_observed_pwr = max(max_observed_pwr, cpu.usage_watts);
-			out += Theme::g("cached").at(clamp(cpu.usage_watts / max_observed_pwr * 100.0f, 0.0f, 100.0f)) + cwatts + Theme::c("main_fg") + cwatts_post; 
+			const auto watts_error = cpu.usage_watts < 0.0f or cpu.usage_watts > 9'999.0f;
+			last_valid_cpu_watts = watts_error ? last_valid_cpu_watts : cpu.usage_watts;
+			max_observed_pwr = max(max_observed_pwr, last_valid_cpu_watts);
+			fmt::format_to(std::back_inserter(out), " {watts_color}{cwatts:>4.{precision}f}{main_fg}W",
+				"watts_color"_a = Theme::g("cached").at(clamp(last_valid_cpu_watts / max_observed_pwr * 100.0f, 0.0f, 100.0f)),
+				"cwatts"_a = last_valid_cpu_watts,
+				"precision"_a = last_valid_cpu_watts < 9.995f ? 2 : last_valid_cpu_watts < 99.95f ? 1 : 0,
+				"main_fg"_a = Theme::c("main_fg"));
 		}
 
 			out += Theme::c("div_line") + Symbols::v_line;
